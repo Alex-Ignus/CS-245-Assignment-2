@@ -13,6 +13,17 @@ public class GraphImplementation{
         adjMatrix = new int[numVertices][numVertices];
     }
 
+    class Node{
+        int neighbor;
+        int cost;
+        Node nest;
+    }
+
+    class Graph{
+        private Node edges;
+        int numVertex;
+    }
+
     public void addEdge(int x, int y) throws Exception {
         if (x <= numVertices && y <= numVertices && x >= 0 && y >= 0) {
             adjMatrix[x][y] = 1;

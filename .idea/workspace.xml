@@ -2,18 +2,12 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="e82413ec-c352-41f3-acdf-d538198eaedb" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/codeStyles/codeStyleConfig.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/CS 245 - P03 - Practice Assignment 03.pdf" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/CS 245 - P10 - Practice Assignment 10.pdf" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/CS 245 - P11 - Practice Assignment 11.pdf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/CS-245-Assignment-2/CSV$JsonHealper.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/CS-245-Assignment-2/CSV$JsonHealper.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/CS-245-Assignment-2/CSV.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/CS-245-Assignment-2/CSV.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/CS-245-Assignment-2/GraphImplementation.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/CS-245-Assignment-2/GraphImplementation.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/CS-245-Assignment-2/JsonReder.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/CS-245-Assignment-2/Driver.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/CS-245-Assignment-2/Driver.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/CSV.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/CSV.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/GraphImplementation.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/GraphImplementation.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/JsonReder.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Driver.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Driver.java" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -335,6 +329,9 @@
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
     <property name="nodejs_npm_path_reset_for_default_project" value="true" />
     <property name="nodejs_package_manager_path" value="npm" />
+    <property name="project.structure.last.edited" value="Facets" />
+    <property name="project.structure.proportion" value="0.0" />
+    <property name="project.structure.side.proportion" value="0.2" />
   </component>
   <component name="RunDashboard">
     <option name="ruleStates">
@@ -382,7 +379,7 @@
       <updated>1575426517836</updated>
       <workItem from="1575426521094" duration="4606000" />
       <workItem from="1575664039053" duration="2835000" />
-      <workItem from="1575677542938" duration="4322000" />
+      <workItem from="1575677542938" duration="6702000" />
     </task>
     <servers />
   </component>

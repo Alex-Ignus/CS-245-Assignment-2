@@ -1,44 +1,79 @@
-import java.util.ArrayList;
-import java.util.List;
-import java.util.stream.IntStream;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.LinkedList;
 
 public class GraphImplementation{
 
-    private int adjMatrix[][];
-    private int numVertices;
-    private Movie data;
+    private HashMap<Node, LinkedList<Node>> adjacencyMap;
 
-    public GraphImplementation(int size) {
-        this.numVertices = size;
-        adjMatrix = new int[numVertices][numVertices];
+    public GraphImplementation() {
+        adjacencyMap = new HashMap<>();
     }
 
-    public void addEdge(int x, int y) throws Exception {
-        if (x <= numVertices && y <= numVertices && x >= 0 && y >= 0) {
-            adjMatrix[x][y] = 1;
-        } else {
-            throw new Exception();
+    public class Node  {
+        int weight;
+        String actor;
+        HashSet<Node> edges = new HashSet<>();
+
+        Node(int weight, String name){
+            this.weight = weight;
+            this.actor = name;
         }
-    }
 
+        public void addEdge(Node node) {
+            if (!edges.contains(node))
+                edges.add(node);
+        }
 
-    private int firstFound(int[] arr) {
-        return IntStream.range(0, arr.length).filter(i -> arr[i] == 0).findFirst().orElse(-1);
-    }
-
-
-    public List<Integer> neighbors(int vertex) throws Exception {
-        if (vertex <= numVertices && vertex >= 0) {
-            List<Integer> result = new ArrayList<Integer>();
-            int i = 0;
-            while (i < numVertices) {
-                if (adjMatrix[vertex][i] == 1)
-                    result.add(i);
-                i++;
+        public void addEdges(Collection<Object> edges){
+            for(Object edge: edges){
+                if (!edges.contains(edge))
+                    edges.add(edge);
             }
-            return result;
-        } else {
-            throw new Exception();
+
+        }
+
+    }
+
+
+
+    public void addEdgeHelper(Node a, Node b) {
+        LinkedList<Node> tmp = adjacencyMap.get(a);
+
+        if (tmp != null) {
+            tmp.remove(b);
+        }
+        else tmp = new LinkedList<>();
+        tmp.add(b);
+        adjacencyMap.put(a,tmp);
+    }
+
+    public void addEdge(Node source, Node destination) {
+
+        // We make sure that every used node shows up in our .keySet()
+        if (!adjacencyMap.keySet().contains(source))
+            adjacencyMap.put(source, null);
+
+        if (!adjacencyMap.keySet().contains(destination))
+            adjacencyMap.put(destination, null);
+
+        addEdgeHelper(source, destination);
+
+    }
+
+    public void printEdges() {
+        for (Node node : adjacencyMap.keySet()) {
+            System.out.print("The " + node.actor + " has an edge towards: ");
+            for (Node neighbor : adjacencyMap.get(node)) {
+                System.out.print(neighbor.actor + " ");
+            }
+            System.out.println();
         }
     }
+
+    public boolean hasEdge(Node source, Node destination) {
+        return adjacencyMap.containsKey(source) && adjacencyMap.get(source).contains(destination);
+    }
+
 }

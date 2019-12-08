@@ -1,21 +1,36 @@
+import java.time.Duration;
+import java.time.Instant;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
 
 public class Driver {
-    public static void main(String args []){
-
+    public static void main(String args []) {
+        // store initial start time
+        final Instant start = Instant.now();
+        HashMap<String, HashSet<String>> movieCast = new HashMap<>();
         CSV csv = new CSV();
-        csv.csvReader();
-        HashMap<Integer, HashSet<Actor>> actors = new HashMap<>();
-        actors.putIfAbsent((19995), new HashSet<>());
-        actors.get(19995).add(new Actor(19995, "Avatar", 242, "5602a8a7c3a3685532001c9a", "Jake Sully", "Sam Worthington"));
+        movieCast.putAll(csv.csvReader());
+        Graph graph = new Graph();
+        ArrayList<String> value = null;
+
+        if(movieCast.keySet().size()>0){
+            for(String movie: movieCast.keySet()){
+                if(!movieCast.get(movie).equals(null)){
+                    graph.addEdge(movieCast.get(movie), movie);
+                }
 
 
-        for(Integer x: actors.keySet()){
-            System.out.println(actors.get(19995));
-            for(Actor actor: actors.get(x) ){
-                actor.print();
             }
+
+
+
+
         }
+        final Duration elapsed = Duration.between(start, Instant.now());
+        final double seconds = (double) elapsed.toMillis()
+                / Duration.ofSeconds(1).toMillis();
+        System.out.printf("Elapsed: %f seconds%n", seconds);
     }
 }

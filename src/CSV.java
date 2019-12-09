@@ -12,8 +12,6 @@ public class CSV {
     private HashSet<String> allActors = new HashSet<>();
 
     public HashMap<String, HashSet<String>> csvReader() {
-        List<List<Object>> records = new ArrayList<>();
-
         try (BufferedReader br = Files.newBufferedReader(Paths.get("C:\\Users\\axel\\Documents\\GitHub\\CS-245-Assignment-2\\src\\tmdb_5000_credits.csv"),
                 StandardCharsets.UTF_8)) {
             String line;
@@ -21,9 +19,6 @@ public class CSV {
                 line = line.replaceAll("\\\"{2}", "\"");
                 cleanString(line);
 
-
-                // Object[] values = ((String) line).split("");
-                //records.add(Arrays.asList(values));
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -47,7 +42,6 @@ public class CSV {
     }
 
     public void SaveMovieTitle(String line) {
-        //System.out.println(line);
         String movie = "";
         Pattern pattern = Pattern.compile("([^\\[]*)");
         Matcher matcher = pattern.matcher(line);
@@ -87,17 +81,6 @@ public class CSV {
 
     }
 
-
-    public void cleanList (List < List < Object >> records) {
-            for (List<Object> internal : records) {
-                for (int i = 0; i < internal.size(); i++) {
-                    System.out.println(internal.toString());
-                    if (internal.get(i).toString().contains("name")) {
-                        System.out.println(internal.get(i));
-                    }
-                }
-            }
-       }
         public void printMovies () {
             for (String movie : movieCast.keySet()) {
                 System.out.println("Movie Title: " + movie);

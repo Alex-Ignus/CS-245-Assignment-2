@@ -178,12 +178,12 @@ class GraphAdj {
             source = lookupMap.get ( actorA );
             destination = lookupMap.get ( actorB );
             if ( hasEdge ( source , destination ) ) {
-                System.out.println ( actorA + " <--> " + actorB );
+                System.out.println ( lookupMap.get(actorA).name + " <--> " + lookupMap.get(actorB).name );
             }
             else {
                 results = breadthFirstSearch ( source , destination );
                 if ( results != null ) {
-                    System.out.println ( results );
+                    System.out.println ("A Path was Found: " +  results );
                 }
                 else {
                     System.out.println ( "No path found" );
@@ -192,7 +192,6 @@ class GraphAdj {
         }
         else if ( ! lookupMap.containsKey ( actorA ) ) {
             System.out.println ( "Actor Not Found: " + actorA );
-
         }
         else {
             System.out.println ( "Actor Not Found: " + actorB );

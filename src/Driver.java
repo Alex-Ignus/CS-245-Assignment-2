@@ -77,7 +77,7 @@ class Driver {
             Timer searchTimer = new Timer ( "Searching the Graph" );
             System.out.println (  );
             System.out.println ( "Would you like to play Connect the Celebrities? Y/N" );
-
+            StringBuilder connection;
             while ( play )//noinspection SpellCheckingInspection,SpellCheckingInspection
             {
                 accStr = br.readLine ( );
@@ -90,7 +90,7 @@ class Driver {
                     graph.search ( actorA.toLowerCase ( ).strip () , actorB.toLowerCase ( ).strip () );
                     searchTimer.stopTimer ( );
                     searchTimer.printTimerName ( );
-                    System.out.println ( "Would you like to search again" );
+                    System.out.println ( "Would you like to search again? Y/N" );
                 }
                 else if ( accStr.toLowerCase ( ).contains ( "n" ) ) {
                     System.out.println ( "Eh, I have other things I need to work on too -_-" );

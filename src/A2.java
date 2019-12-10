@@ -10,18 +10,15 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.TreeSet;
 /**
- * Main Driver Class to run and manage code execution and user interaction
+ * Main A2 Class to run and manage code execution and user interaction
  *
  * @author Alexander Wojcik
  * @author University of San Francisco
  * @version Fall 2019
  */
-class Driver {
+class A2 {
     public static void main ( String[] args ) throws IOException {
-        //Creates the main time
-        Timer overall = new Timer ( );
-        // store initial start time
-        overall.startTimer ( );
+
 
         //to store flag/value pairs for FILE io
         HashMap < String, Path > argumentMap = new HashMap <> ( );
@@ -45,15 +42,9 @@ class Driver {
         if ( argumentMap.containsKey ( "input" ) ) {
 
             CSV csv = new CSV ( );
-            Timer fileReading = new Timer ( "Reading the CSV" );
-            fileReading.startTimer ( );
             HashMap < String, HashSet < String > > movieCast = new HashMap <> ( csv.csvReader ( argumentMap.get ( "input" ) ) );
-            fileReading.stopTimer ( );
-            fileReading.printTimerName ();
 
             GraphAdj graph = new GraphAdj ( );
-            Timer graphBuilding = new Timer ( "Building the Graph" );
-            graphBuilding.startTimer ( );
 
             //builds the graph from a set of actors for a given movie
             if ( movieCast.keySet ( ).size ( ) > 0 ) {
@@ -63,43 +54,22 @@ class Driver {
                     }
                 }
             }
-            graphBuilding.stopTimer ( );
-            graphBuilding.printTimerName ( );
 
             //use to get a list of all actors
             //print(graph.getLookUpMap());
 
             BufferedReader br = new BufferedReader ( new InputStreamReader ( System.in ) );
-            String accStr;
             String actorA;
             String actorB;
-            boolean play = true;
-            Timer searchTimer = new Timer ( "Searching the Graph" );
-            System.out.println (  );
-            System.out.println ( "Would you like to play Connect the Celebrities? Y/N" );
-            StringBuilder connection;
-            while ( play )//noinspection SpellCheckingInspection,SpellCheckingInspection
-            {
-                accStr = br.readLine ( );
-                if ( accStr.toLowerCase ( ).contains ( "y" ) ) {
-                    System.out.println ( "What is the name of the first Celebrity?" );
+
+
+
+                    System.out.println ( "Actor 1 name: " );
                     actorA = br.readLine ( );
-                    System.out.println ( "What is the name of the Second Celebrity?" );
+                    System.out.println ( "Actor 2 name: " );
                     actorB = br.readLine ( );
-                    searchTimer.startTimer ( );
                     graph.search ( actorA.toLowerCase ( ).strip () , actorB.toLowerCase ( ).strip () );
-                    searchTimer.stopTimer ( );
-                    searchTimer.printTimerName ( );
-                    System.out.println ( "Would you like to search again? Y/N" );
-                }
-                else if ( accStr.toLowerCase ( ).contains ( "n" ) ) {
-                    System.out.println ( "Eh, I have other things I need to work on too -_-" );
-                    play = false;
-                }
-                else {
-                    //noinspection SpellCheckingInspection,SpellCheckingInspection
-                    System.out.println ( "Hmmm invalid input...wanna try that again:" );
-                }
+
 
 
 //                searchTimer.startTimer();
@@ -111,11 +81,9 @@ class Driver {
 
             }
 
-        }
 
 
-        overall.stopTimer ( );
-        overall.printTimer ( );
+
 
     }
     //helper functions to output a text file of all actors

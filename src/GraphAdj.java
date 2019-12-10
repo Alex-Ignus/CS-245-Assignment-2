@@ -152,16 +152,24 @@ class GraphAdj {
      * @return StringBuilder the string of the path between two Nodes
      */
     private StringBuilder getPath ( Actor source , Actor destination ) {
-        StringBuilder path2dest = new StringBuilder ( );
-
+        ArrayList<String> path2dest = new ArrayList < String > ( );
         while ( destination.hasEdge ( destination ) ) {
-            path2dest.append ( destination.name ).append ( " <--> " );
+            path2dest.add ( destination.name );
             destination = destination.getEdge ( destination );
         }
-        return path2dest.append ( source.name );
+        path2dest.add ( source.name );
+        return printPath(path2dest);
 
     }
 
+    public StringBuilder printPath ( ArrayList < String > path ){
+        StringBuilder results = new StringBuilder (  );
+        for( int i = path.size () - 1; i > 0; i-- ){
+            results.append ( path.get ( i ) + " --> " );
+        }
+        results.append ( path.get ( 0 ) );
+        return results;
+    }
     /**
      * Finds if there is an existing path between two actorA , actorB
      * and finds the shortest path if one exists.
@@ -178,15 +186,19 @@ class GraphAdj {
             source = lookupMap.get ( actorA );
             destination = lookupMap.get ( actorB );
             if ( hasEdge ( source , destination ) ) {
-                System.out.println ( lookupMap.get(actorA).name + " <--> " + lookupMap.get(actorB).name );
+                System.out.println ("Path between " + lookupMap.get(actorA).name +
+                                    " and " + lookupMap.get(actorB).name + " "
+                                    +  lookupMap.get(actorA).name + " --> " + lookupMap.get(actorB).name );
             }
             else {
                 results = breadthFirstSearch ( source , destination );
                 if ( results != null ) {
-                    System.out.println ("A Path was Found: " +  results );
+                    System.out.println ("Path between " + lookupMap.get(actorA).name +
+                                        " and " + lookupMap.get(actorB).name + " " +  results );
                 }
                 else {
-                    System.out.println ( "No path found" );
+                    System.out.println ( "No path was found between " + lookupMap.get(actorA).name +
+                                         " and " + lookupMap.get(actorB).name );
                 }
             }
         }

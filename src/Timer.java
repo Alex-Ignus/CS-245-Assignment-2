@@ -1,36 +1,57 @@
 import java.time.Duration;
 import java.time.Instant;
-
-public class Timer {
+/**
+ * Utility Class to create, start, stop and print out timers
+ * Used to clock runtime for functions
+ *
+ * @author Alexander Wojcik
+ * @author University of San Francisco
+ * @version Fall 2019
+ */
+class Timer {
     private Instant overall;
-    private Duration elapsed;
     private double seconds;
     private String name;
-
-
-    public Timer(){
-        System.out.println("Starting overall Program Time");
+    /**
+     * Prints overall timer start
+     */
+    public Timer ( ) {
+        System.out.println ( "Starting overall Program Time" );
 
     }
-    public Timer(String custom){
+    /**
+     * Prints custom timer start
+     */
+    public Timer ( String custom ) {
         this.name = custom;
-        System.out.println("Logging subroutine: " + custom +" start time.");
+        System.out.printf ( "Logging subroutine: %s start time.%n" , custom );
+    }
+    /**
+     * Starts timer
+     */
+    public void startTimer ( ) {
+        overall = Instant.now ( );
     }
 
-    public void startTimer(){
-        overall = Instant.now();
-    }
-    public void stopTimer(){
-        elapsed = Duration.between(overall, Instant.now());
-        seconds = (double) elapsed.toMillis()
-                / Duration.ofSeconds(1).toMillis();
+    /**
+     * Stops timer
+     */
+    public void stopTimer ( ) {
+        Duration elapsed = Duration.between ( overall , Instant.now ( ) );
+        seconds = (double) elapsed.toMillis ( )
+                  / Duration.ofSeconds ( 1 ).toMillis ( );
 
     }
-    public void printTimer(){
-        System.out.printf("Overall Program Time: %f seconds%n", seconds);
+    /**
+     * Prints Overall time
+     */
+    public void printTimer ( ) {
+        System.out.printf ( "Overall Program Time: %f seconds%n" , seconds );
     }
-
-    public void printTimerName(){
-        System.out.printf(this.name + ": Time: %f seconds%n", seconds);
+    /**
+     * Prints custom time
+     */
+    public void printTimerName ( ) {
+        System.out.printf ( this.name + ": Time: %f seconds%n" , seconds );
     }
 }

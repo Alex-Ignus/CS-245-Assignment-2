@@ -12,35 +12,34 @@ import java.util.TreeSet;
  * @author University of San Francisco
  * @version Spring 2019
  */
-public class FileFinder {
+class FileFinder {
 
     private static String uniqueEx;
 
     /**
      * reads the flag file path location pass path to fileFinder
      *
-     * @param path
-     *            the locations of the file
+     * @param path the locations of the file
      * @return inputFile the set of files found in given location
      * @throws IOException
      */
-    public static TreeSet<Path> fileFinder(Path path, String extension) throws IOException {
-        final TreeSet<Path> inputFile = new TreeSet<>();
+    public static TreeSet < Path > fileFinder ( Path path , String extension ) throws IOException {
+        final TreeSet < Path > inputFile = new TreeSet <> ( );
         uniqueEx = extension;
-        fileFinder(path, inputFile);
+        fileFinder ( path , inputFile );
         return inputFile;
     }
+
     /**
      * reads the flag file path location pass path to fileFinder
      *
-     * @param path
-     *            the locations of the file
+     * @param path the locations of the file
      * @return inputFile the set of files found in given location
      * @throws IOException
      */
-    public static String fileFinder(Path path ) throws IOException {
+    public static String fileFinder ( Path path ) throws IOException {
         String inputFile = null;
-        fileFinder(path, inputFile);
+        fileFinder ( path , inputFile );
         return inputFile;
     }
 
@@ -48,24 +47,24 @@ public class FileFinder {
      * reads files/ each file of a directory and adds those file paths to an
      * ArrayList of the class to pass to outputFiles
      *
-     * @param path
-     *            the path to be checked
-     * @param inputFile
-     *            the masterList data structure
+     * @param path      the path to be checked
+     * @param inputFile the masterList data structure
      * @throws IOException
-     *
      * @paramMap<String, String> argsMap: Map of flag/value pairs
      */
-    public static void fileFinder(Path path, Set<Path> inputFile)
+    private static void fileFinder ( Path path , Set < Path > inputFile )
             throws IOException {
 
-        if (isTextFile(path) && !path.toString().contains("out/production")) {
-            inputFile.add(path);
-        } else if (Files.isDirectory(path)) {
-            try (DirectoryStream<Path> listing = Files
-                    .newDirectoryStream(path)) {
-                for (final Path file : listing) {
-                    fileFinder(file, inputFile);
+        if ( isTextFile ( path ) && ! path.toString ( ).contains ( "out/production" ) ) {
+            inputFile.add ( path );
+        }
+        else if ( Files.isDirectory ( path ) ) {
+            try (
+                    DirectoryStream < Path > listing = Files
+                            .newDirectoryStream ( path )
+            ) {
+                for ( final Path file : listing ) {
+                    fileFinder ( file , inputFile );
                 }
             }
         }
@@ -75,21 +74,22 @@ public class FileFinder {
     /**
      * Checks if path is a file
      *
-     * @param path
-     *            the path to be checked
+     * @param path the path to be checked
      * @return boolean if path is file or not
      **/
-    public static boolean isTextFile(Path path) {
-        String lower = path.toString().toLowerCase();
-        return (!Files.isDirectory(path) && lower.endsWith(".txt")
-                || lower.endsWith(".text") || lower.endsWith(getUniqueEx()));
+    private static boolean isTextFile ( Path path ) {
+        String lower = path.toString ( ).toLowerCase ( );
+        return (
+                ! Files.isDirectory ( path ) && lower.endsWith ( ".txt" )
+                || lower.endsWith ( ".text" ) || lower.endsWith ( getUniqueEx ( ) )
+        );
     }
 
-    public static String getUniqueEx() {
+    private static String getUniqueEx ( ) {
         return uniqueEx;
     }
 
-    public static void setUniqueEx(String uniqueEx) {
+    public static void setUniqueEx ( String uniqueEx ) {
         FileFinder.uniqueEx = uniqueEx;
     }
 }

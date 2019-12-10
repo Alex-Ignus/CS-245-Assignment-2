@@ -1,17 +1,17 @@
 import java.util.*;
 
-public class Graph {
+class Graph {
 
-    public HashMap<String, Actor> adjacencyMap;
+    private final HashMap<String, Actor> adjacencyMap;
 
     public Graph() {
         adjacencyMap = new HashMap<>();
     }
 
-    public class Actor {
-        String actor;
-        HashSet<String> movies = new HashSet<>();
-        HashMap<String, Actor> edges = new HashMap<>();
+    class Actor {
+        final String                 actor;
+        final HashSet<String>        movies = new HashSet<>();
+        final HashMap<String, Actor> edges  = new HashMap<>();
 
         Actor(String name){
             this.actor = name;

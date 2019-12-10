@@ -1,198 +1,262 @@
 import java.util.*;
+/**
+ * Builds an adjacencyMap data Structure of a HashMap < Actor, LinkedList < Actor > >
+ *     and implements a breadthFirstSearch method.
+ *
+ * @author Alexander Wojcik
+ * @author University of San Francisco
+ * @version Fall 2019
+ */
+class GraphAdj {
 
-public class GraphAdj {
-    // Each node maps to a list of all his neighbors
-    private HashMap<Node, LinkedList<Node>> adjacencyMap;
-    private HashMap<String, Node> lookupMap = new HashMap<>();
+    private final HashMap < Actor, LinkedList < Actor > > adjacencyMap;
+    private final HashMap < String, Actor > lookupMap = new HashMap <> ( );
 
-    public GraphAdj() {
-        adjacencyMap = new HashMap<>();
+    public GraphAdj ( ) {
+        adjacencyMap = new HashMap <> ( );
     }
+    /**
+     * Node class: Actor for purpose of a particular project
+     */
+    public class Actor {
+        final String name; //data storage
+        Actor edge; //used for searching
+        boolean found; //used for searching
 
-    public class Node {
-        String name;
-        Node parent;
-        boolean visited;
-
-        Node(String name){
+        //constructor sets name and found as false by default
+        Actor ( String name ) {
             this.name = name;
-            visited = false;
+            found = false;
         }
-        void visit() {
-            visited = true;
+        //sets found to true
+        void find ( ) {
+            found = true;
         }
-
-        void unvisit() {
-            visited = false;
+        //sets found to false
+        void lose ( ) {
+            found = false;
         }
-
-        public boolean isVisited() {
-            return this.visited;
+        //returns boolean of nodes lost/found state
+        boolean isFound ( ) {
+            return this.found;
         }
-        public void setParent(Node parent){
-            this.parent = parent;
+        //used to set edge of node for searching
+        void setEdge ( Actor edge ) {
+            this.edge = edge;
         }
-        public Node getParent(Node dest){
-           return  dest.parent;
+        //returns the next node/edge of this node
+        Actor getEdge ( Actor dest ) {
+            return dest.edge;
         }
-        public boolean hasParent(Node child){
-           return this.parent != null;
+        //returns if node has edge
+        boolean hasEdge ( Actor child ) {
+            return this.edge != null;
         }
     }
 
-    public void addEdgeHelper(Node a, Node b) {
-        LinkedList<Node> tmp = adjacencyMap.get(a);
+    /**
+     * Helper method to ensure that Node b is added to Node a's
+     * Edge list while ensuing that a exsists in the first place in
+     * the graph
+     *
+     * @param a the Node who;s list of edges were adding to
+     * @param b the Node/Edge to add to a
+     */
+    private void addEdgeHelper ( Actor a , Actor b ) {
+        adjacencyMap.putIfAbsent ( a,new LinkedList <> (  ) );
+        adjacencyMap.get ( a ).add ( b );
+    }
 
-        if (tmp != null) {
-            tmp.remove(b);
+    /**
+     * Creates and edge between the source and the destination
+     * by default this method creates an undirected graph for
+     * the user to travers and utilize
+     *
+     * @param source The first Node
+     * @param destination the second Node
+     */
+    private void addEdge ( Actor source , Actor destination ) {
+        if ( ! adjacencyMap.isEmpty ( ) ) {
+            if ( ! adjacencyMap.keySet ( ).contains ( source ) )
+                adjacencyMap.put ( source , null );
+
+            if ( ! adjacencyMap.keySet ( ).contains ( destination ) )
+                adjacencyMap.put ( destination , null );
         }
-        else tmp = new LinkedList<>();
-        tmp.add(b);
-        adjacencyMap.put(a,tmp);
+        addEdgeHelper ( source , destination );
+        addEdgeHelper ( destination , source );
+    }
+    /**
+     * Add's the actor to the look up map
+     *
+     * @param actor adding the actor to the lookupMap
+     */
+    public void add ( String actor ) {
+        lookupMap.putIfAbsent ( actor.toLowerCase ( ) , new Actor ( actor ) );
     }
 
-    public void addEdge(Node source, Node destination) {
+    /**
+     * Helper function to ensure that actor is added to the lookupMap
+     * if actor is not present, used to avoid null pointer errors
+     * Use only when the goal is to ensure data is in the look map
+     *
+     * @param actor adding the actor to the lookupMap
+     */
+    private Actor addthenGet ( String actor ) {
+        lookupMap.putIfAbsent ( actor.toLowerCase ( ) , new Actor ( actor ) );
+        return lookupMap.get ( actor.toLowerCase ( ) );
+    }
 
+    /**
+     * Function to add a collection of strings as keys for node values
+     * to the lookupMap
+     *
+     * @param actors String collection of actors
+     */
+    void addAll ( Collection < String > actors ) {
+        actors.forEach ( actor -> actors.stream ( ).filter ( castMember -> ! actor.equals ( castMember ) ).forEach
+                ( castMember -> addEdge ( lookupMap.getOrDefault ( actor.toLowerCase ( )
+                , addthenGet ( actor ) ) , lookupMap.getOrDefault ( castMember.toLowerCase ( ) , addthenGet ( castMember ) ) ) ) );
+    }
 
-        if(!adjacencyMap.isEmpty()){
-            if (!adjacencyMap.keySet().contains(source))
-                adjacencyMap.put(source, null);
+    /**
+     * Function to print all the edges of the adjacencyMap
+     */
+    public void printEdges ( ) {
+        adjacencyMap.keySet ( ).forEach ( actor -> {
+            System.out.print ( "The " + actor.name + " has an edge towards: " );
+            adjacencyMap.get ( actor ).stream ( ).map ( neighbor -> neighbor.name + " " ).forEach ( System.out :: print );
+            System.out.println ( );
+        } );
+    }
 
-            if (!adjacencyMap.keySet().contains(destination))
-                adjacencyMap.put(destination, null);
+    /**
+     * boolean function check if a Node has an edge to another Node
+     *
+     * @param source The node whose edges that are being checked for destination
+     * @param destination the node we are looking for
+     *
+     * @return boolean if source has an edge to destination
+     */
+    private boolean hasEdge ( Actor source , Actor destination ) {
+        return adjacencyMap.containsKey ( source ) && adjacencyMap.get ( source ).contains ( destination );
+    }
+
+    /**
+     * Finds the existing path between two Nodes source, destination
+     * and creates a StringBuilder to output the Path
+     *
+     * @param source The node whose edges that are being checked for destination
+     * @param destination the node we are looking for
+     *
+     * @return StringBuilder the string of the path between two Nodes
+     */
+    private StringBuilder getPath ( Actor source , Actor destination ) {
+        StringBuilder path2dest = new StringBuilder ( );
+
+        while ( destination.hasEdge ( destination ) ) {
+            path2dest.append ( destination.name ).append ( " <--> " );
+            destination = destination.getEdge ( destination );
         }
-
-        addEdgeHelper(source, destination);
-        addEdgeHelper(destination, source);
-
+        return path2dest.append ( source.name );
 
     }
 
-    public void add(String actor){
-        lookupMap.putIfAbsent(actor, new Node(actor));
-    }
-    public Node addthenGet(String actor){
-        lookupMap.putIfAbsent(actor, new Node(actor));
-        return lookupMap.get(actor);
-    }
-
-    public void addAll(Collection<String> actors){
-        for(String actor: actors){
-            for(String castMember: actors){
-                if(!actor.equals(castMember)){
-                    addEdge(lookupMap.getOrDefault(actor, addthenGet(actor)), lookupMap.getOrDefault(castMember, addthenGet(castMember)));
+    /**
+     * Finds if there is an existing path between two actorA , actorB
+     * and finds the shortest path if one exists.
+     *
+     * @param actorA the starting point
+     * @param actorB the destination
+     *
+     */
+    public void search ( String actorA , String actorB ) {
+        Actor source;
+        Actor destination;
+        StringBuilder results;
+        if ( lookupMap.containsKey ( actorA ) && lookupMap.containsKey ( actorB ) ) {
+            source = lookupMap.get ( actorA );
+            destination = lookupMap.get ( actorB );
+            if ( hasEdge ( source , destination ) ) {
+                System.out.println ( actorA + " <--> " + actorB );
+            }
+            else {
+                results = breadthFirstSearch ( source , destination );
+                if ( results != null ) {
+                    System.out.println ( results );
+                }
+                else {
+                    System.out.println ( "No path found" );
                 }
             }
         }
-    }
+        else if ( ! lookupMap.containsKey ( actorA ) ) {
+            System.out.println ( "Actor Not Found: " + actorA );
 
-    public void printEdges() {
-        for (Node node : adjacencyMap.keySet()) {
-            System.out.print("The " + node.name + " has an edge towards: ");
-            for (Node neighbor : adjacencyMap.get(node)) {
-                System.out.print(neighbor.name + " ");
-            }
-            System.out.println();
+        }
+        else {
+            System.out.println ( "Actor Not Found: " + actorB );
         }
     }
 
+    /**
+     * Finds if there is an existing path between two actorA , actorB
+     * and finds the shortest path if one exists, by checking each
+     * row of edges instead of depth
+     *
+     * @param source The root Node/starting point
+     * @param destination the end Node/destination
+     *
+     * @return StringBuilder the string of the
+     *           path between two Nodes, or null if no path is present
+     */
+    private StringBuilder breadthFirstSearch ( Actor source , Actor destination ) {
+        HashMap < Actor, LinkedList < Actor > > tmpMap = new HashMap <> ( adjacencyMap );
 
-    public boolean hasEdge(Node source, Node destination) {
-        return adjacencyMap.containsKey(source) && adjacencyMap.get(source).contains(destination);
-    }
-
-
-
-    public StringBuilder getPath(Node source, Node destination){
-        StringBuilder path2dest = new StringBuilder();
-
-        while(destination.hasParent(destination)){
-            path2dest.append(destination.name + " <--> ");
-            destination = destination.getParent(destination);
-        }
-       return path2dest.append(source.name);
-
-    }
-
-
-    public void search(String actorA, String actorB){
-        Node source;
-        Node destination;
-        StringBuilder results;
-        if(lookupMap.containsKey(actorA) && lookupMap.containsKey(actorB)){
-            source = lookupMap.get(actorA);
-            destination = lookupMap.get(actorB);
-            if(hasEdge(source, destination)){
-                System.out.println(actorA + " <--> " + actorB);
-            }else {
-               results = breadthFirstSearch( source,  destination);
-               if(results != null){
-                   System.out.println(results);
-               }else{
-                   System.out.println("No path found");
-               }
-            }
-        }
-        else if(!lookupMap.containsKey(actorA)){
-            System.out.println("Actor Not Found" + actorA);
-
-        }else{
-            System.out.println("Actor Not Found" + actorB);
-        }
-
-    }
-
-    public StringBuilder breadthFirstSearch(Node source, Node destination) {
-        HashMap<Node, LinkedList<Node>> tmpMap = new HashMap<>(adjacencyMap);
-
-        if (source == null) {
+        if ( source == null ) {
             return null;
         }
 
-        LinkedList<Node> queue = new LinkedList<>();
+        LinkedList < Actor > queue = new LinkedList <> ( );
+        queue.add ( source );
 
-        queue.add(source);
+        while ( ! queue.isEmpty ( ) ) {
 
-        while (!queue.isEmpty()) {
-            Node currentFirst = queue.removeFirst();
-
-            if (currentFirst.isVisited()){
+            Actor currentFirst = queue.removeFirst ( );
+            if ( currentFirst.isFound ( ) ) {
                 continue;
             }
 
-            currentFirst.visit();
+            currentFirst.find ( );
 
-            if (tmpMap.get(currentFirst) == null){
+            if ( tmpMap.get ( currentFirst ) == null ) {
                 continue;
-
-            }else{
-
-                for (Node neighbor : tmpMap.get(currentFirst)) {
-
-                    if(tmpMap.get(neighbor).contains(destination) && !destination.isVisited()){
-                        neighbor.setParent(currentFirst);
-                        destination.setParent(neighbor);
-                        destination.isVisited();
-                        return getPath(source, destination);
-
+            }
+            else {
+                for ( Actor neighbor : tmpMap.get ( currentFirst ) ) {
+                    if ( tmpMap.get ( neighbor ).contains ( destination ) && ! destination.isFound ( ) ) {
+                        neighbor.setEdge ( currentFirst );
+                        destination.setEdge ( neighbor );
+                        return getPath ( source , destination );
                     }
-                    else if (!neighbor.isVisited()) {
-                        neighbor.setParent(currentFirst);
-                        queue.add(neighbor);
+                    else if ( ! neighbor.isFound ( ) ) {
+                        neighbor.setEdge ( currentFirst );
+                        queue.add ( neighbor );
                     }
                 }
-
             }
-            System.out.println();
-
-
+            System.out.println ( );
         }
-
-
         return null;
-
     }
-
+    /**
+     * Helper Function to return a copy of the lookupMap
+     *
+     * @return HashMap copy of the loopupMap
+     */
+    public HashMap < String, Actor > getLookUpMap ( ) {
+        return new  HashMap <  >(this.lookupMap);
+    }
 
 
 }
